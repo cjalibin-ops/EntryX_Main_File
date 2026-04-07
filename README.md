@@ -64,6 +64,3 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 - Project Link - [EntryX-Website]()
 
-
-
-[product-screenshot]: Images/screenshot.png
