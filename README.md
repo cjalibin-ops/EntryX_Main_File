@@ -17,8 +17,6 @@
 </div>
 <br>
 
-[![Product Name Screen Shot][product-screenshot]](src/images/main_page.png)
-
 # About The Project
 
 UNP Visitors RFID Entry System helps monitor campus visitors, track entry and exit activity, and improve campus security.
@@ -58,9 +56,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 # Contact
 
-- Name - <a href="">Ranit Kumar Manik</a>
+- Name - <a href="">Cj Alibin</a>
 
-- Email - ranitmanikofficial@outlook.com
+- Email - cjalibin2@gmain.com
 
 - Project Link - [EntryX-Website]()
 
