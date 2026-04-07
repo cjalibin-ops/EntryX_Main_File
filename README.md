@@ -4,7 +4,7 @@
   <a href="https://cjalibin-ops.github.io/EntryX_Main_File/">
     <img src="src/images/main_page.png" alt="Logo" height="150">
   </a>
-<h1>DCU: Dynamic Convergence University Website
+<h1>EntryX: visitors Entry and Exit log system
 </h1>
 <a href="">Visit the Website »</a>
 <br >
@@ -17,7 +17,7 @@
 </div>
 <br>
 
-[![Product Name Screen Shot][product-screenshot]](https://cjalibin-ops.github.io/EntryX_Main_File/)
+[![Product Name Screen Shot][product-screenshot]](src/images/main_page.png)
 
 # About The Project
 
