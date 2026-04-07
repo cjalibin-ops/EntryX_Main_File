@@ -1,0 +1,8 @@
+*.json
+node_modules/
+backend/
+
+src/api/
+src/handle_Form/
+src/services/
+*.js

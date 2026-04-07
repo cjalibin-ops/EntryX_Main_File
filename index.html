@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EntryX: Visitors Main Page</title>
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <!-- Boxicons -->
+	  <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" href="src/images/titile.png" type="image/x-icon" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&family=Poppins:wght@100;200&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,200&display=swap"
+      rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.6/dist/axios.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+  </head>
+
+  <body>
+    <section class="header page-load" data-aos="fade-up">
+      <nav>
+        <a href="index.html"> <img class="img-title" src='src/images/titile.png' alt="Website Logo"/> </a>
+        <div class="nav-links" id="navLinks">
+          <i class="fa fa-times" onclick="hideMenu()"></i>
+
+          <ul>
+            <li><a href="#">HOME</a></li>
+            <li><a href="src/pages/about1.html">ABOUT</a></li>
+            <li><a href="src/pages/policy.html">POLICY</a></li>
+            <li><a href="src/pages/contact.html">CONTACT</a></li>
+          </ul>
+          
+        </div>
+        <i class="fa fa-bars" onclick="showMenu()"></i>
+      </nav>
+      <div class="text-box">
+        <h1>Welcome to UNP Visitors System</h1>
+        <p>
+          Please use your Visitors RFID Card to complete your entry in campus.
+        </p>
+         <p id="clock"></p>
+        <button type="button" class="hero-btn">Visit Us To know More</button>
+      </div>
+    </section>
+
+     <header>
+        <h1><i class="fa-solid fa-user"></i> Visitor Profiler</h1>
+        <div>
+          <button id="openRegister">
+            <i class="fa-solid fa-user-plus"></i> Register New
+          </button>
+        </div>
+      </header>
+      <main class="page-load" data-aos="fade-up">
+          <!-- REGISTER VISITOR MODAL -->
+          <div id="registerModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>  
+
+              <h2><i class="fa-solid fa-user-plus"></i> Register New Visitor</h2>
+
+              <div class="form-group">
+                <label for="rfidcards">RFID Card</label>
+                <input id="rfidcards" placeholder="Tap Your RFID Card">
+              </div>
+
+              <div class="model-line">
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input id="last_name" placeholder="Enter Your Last Name">
+                </div>
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input id="first_name" placeholder="Enter Your First Name">
+                </div>
+                <div class="form-group">
+                  <label>Middle Name</label>
+                  <input id="middle_name" placeholder="Enter Your Middle Name">
+                </div>
+              </div>
+
+              <div class="model-line">
+                <div class="form-group">
+                  <label for="municipality">Municipality/City</label>
+                  <select id="municipality" onchange="updateBarangays()">
+                    <option value="">-- Select Municipality --</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="barangay">Barangay</label>
+                  <select id="barangay">
+                    <option value="">-- Select Municipality First --</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="zipcode">ZIP Code</label>
+                  <input type="text" id="zipcode" readonly placeholder="Auto-filled">
+                </div>
+              </div>
+
+              <!-- CENTERED BUTTON -->
+              <div class="btn-container">
+                <button id="registerBtn" class="btn btn-success">Register Visitor</button>
+              </div>
+            </div>
+          </div>
+
+                <!-- VISITOR LIST -->
+            <div class="top-cards">
+                <div class="card-v" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-header blue-header">
+                        <i class='bx bxs-credit-card'></i> Top your RFID Card
+                    </div>
+                    <div class="checkin-body">
+                        <p class="input-label">Visitor Tag UID</p>
+                        <div class="input-group">
+                            <i class='bx bxs-credit-card'></i>  
+                            <input type="text" id="visitor-uid" placeholder="Scan Visitor Badge...">
+
+                            <div id="visitorModal" class="modal-overlay">
+                                <div class="visitor-popup">
+                                    <h2><i class='bx'></i> Visitor Detected</h2>
+                                    
+                                    <div class="credential-info">
+                                        <p><strong>Name:</strong> <span id="displayFullName">Loading...</span></p>
+                                    </div>
+                                    <div id="checkInFields">
+                                        <label for="personToVisit" style="font-size: 0.8rem; color: #666;">Host / Person to Visit:</label>
+                                        <select id="personToVisit" required>
+                                            <option value="" disabled selected>-- Select Person to Visit --</option>
+                                            <optgroup label="Administration">
+                                                <option value="Admin Office">Admin Office</option>
+                                                <option value="Registrar">Registrar's Office</option>
+                                            </optgroup>
+                                            <optgroup label="Faculty/Staff">
+                                                <option value="Dr. Smith">Dr. Smith (Dean)</option>
+                                                <option value="Prof. Johnson">Prof. Johnson</option>
+                                                <option value="Ms. Davis">Ms. Davis (Accounting)</option>
+                                                <option value="Others">Others</option>
+                                            </optgroup>
+                                        </select>
+
+                                        <label for="purpose">Purpose:</label>
+                                        <select id="purpose">
+                                            <option value="" disabled selected>-- What purpose to visit? --</option>
+                                            <option value="Inquiry">General Inquiry</option>
+                                            <option value="Document Pickup">Document Pickup</option>
+                                            <option value="Official Business">Official Business</option>
+                                            <option value="Personal">Personal</option>
+                                            <option value="Other">Others</option>
+                                        </select>
+                                    </div>
+                                    <p id="statusMessage"></p>
+                                    <div class="modal-actions">
+                                      <button id="submitBtn">Confirm Action</button>
+                                      <button id="cancelVisitor">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="helper-text">Place the RFID badge near the reader</p>
+                    </div>
+                </div>
+
+                <div class="card-v" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-header teal-header">
+                        <i data-lucide="trending-up"></i> Today's Summary
+                    </div>
+                    <div class="stats-body">
+                      <div class="stat-row"><span>Currently Inside :</span> <strong id="totalRecords">0</strong></div>
+                      <div class="stat-row"><span>Currently Inside Today :</span> <strong id="count-total" class="text-success">0</strong></div>
+                      <div class="stat-row"><span>Checked Out Today :</span> <strong id="count-checked" class="text-danger">0</strong></div>
+                    </div>
+                </div>
+            </div>
+
+          <!-- ----------Table------------------>
+          <div class="card table-card" data-aos="fade-up" data-aos-delay="300">
+              <div class="table-header">
+                <h3>Recent Activity</h3>
+                <input type="text" id="searchVisitor" class="table-search" placeholder="Search Visitors"> 
+              </div>
+
+              <div class="table-wrapper">
+                  <table class="modern-table">
+                      <thead>
+                          <tr>
+                              <th>#</th>
+                              <th>Tag UID</th>
+                              <th>Visitor Name</th>
+                              <th>Person to Visit</th>
+                              <th>Purpose</th>
+                              <th>Check In</th>
+                              <th>Check Out</th>
+                              <th>Date</th>
+                              <th>Status</th>
+                          </tr>
+                      </thead>
+
+                      <tbody id="visitor-table">
+                      </tbody>
+                  </table>
+              </div>
+              <div class="table-footer">
+
+                <span>Total visitors <b id="totalVisitors">0</b> records</span>
+
+                <div class="table-footer-right">
+                    <!-- Pagination Buttons -->
+                  <div class="pagination" id="pageNumbers">
+                      <button id="prevPage">‹</button>
+                      <span id="numericPages"></span>
+                      <button id="nextPage">›</button>
+                  </div>
+
+                    <!-- Rows per page dropdown -->
+                    <select id="rowsSelect" class="rows-select">
+                      <option value="10">10 / page</option>
+                      <option value="20">20 / page</option>
+                      <option value="50">50 / page</option>
+                      <option value="100">100 / page</option>
+                    </select>
+                  </div>
+              </div>
+              </div>
+          </div>
+      </main>
+<!-- Modern Footer -->
+<footer class="footer-modern text-muted" class="page-load" data-aos="fade-up">
+
+  <!-- Social Media -->
+  <section class="footer-social">
+    <div class="footer-social-left">
+      <span>Get connected with us on social networks:</span>
+    </div>
+
+    <div class="footer-social-right">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://x.com/UNPTheOfficial"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-google"></i></a>
+      <a href="https://www.instagram.com/theofficialunp/"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-github"></i></a>
+
+      <!-- SIGN UP BUTTON -->
+      <a href="src/pages/signup.html" class="footer-signup">
+        <i class="fa-solid fa-user-plus"></i> Sign Up
+      </a>
+    </div>
+  </section>
+
+  <!-- Links Section -->
+  <section class="footer-links">
+    <div class="footer-container">
+
+      <!-- Company -->
+      <div class="footer-col">
+        <h6><i class="fas fa-gem"></i> EntryX Visitors</h6>
+        <p>
+          UNP Visitors RFID Entry System helps monitor campus visitors,
+          track entry and exit activity, and improve campus security.
+        </p>
+      </div>
+
+      <!-- Products -->
+      <div class="footer-col">
+        <h6>System Features</h6>
+        <p><a href="#">RFID Entry</a></p>
+        <p><a href="#">Visitor Profiling</a></p>
+        <p><a href="#">Entry Monitoring</a></p>
+        <p><a href="#">Reports</a></p>
+      </div>
+
+      <!-- Useful Links -->
+      <div class="footer-col">
+        <h6>Useful Links</h6>
+        <p><a href="#">About</a></p>
+        <p><a href="#">Policy</a></p>
+        <p><a href="#">Contact</a></p>
+        <p><a href="#">Help</a></p>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-col">
+        <h6>Contact</h6>
+        <p><i class="fas fa-home"></i> UNP, Tamag Vigan City, ilocos Sur</p>
+        <p><i class="fas fa-envelope"></i>  admissionservices@unp.edu.ph</p>
+        <p><i class="fas fa-phone"></i> +63 917 515 6779</p>
+        <p><i class="fas fa-print"></i> +63 946 641 9503</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Copyright -->
+  <div class="footer-copy">
+    © 2026 Copyright:
+    <strong>UNP Visitors Entry System</strong>
+  </div>
+
+</footer>
+
+    <!-- Toast container -->
+    <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
+
+    <!-- ----------Connection & Bootstrap & controll script------------------>
+
+   <!-- jQuery FIRST -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap for toast  -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <!-- Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+    <script src="src/handle_Form/handle_button/handle_navlink.js"></script>
+
+
+    <!-- Clock connection-->
+    <script src="src/handle_Form/handle_button/handle_clock.js"></script>
+
+
+    <!--command for sellection in Municipality -->
+    <script src="src/handle_Form/handle_control/controll_address_fucntion.js"></script>
+
+    <!-- visitor register pop up command -->
+    <script src="src/handle_Form/handle_button/handle_popup_button.js"></script>
+
+
+    <!-- Visitor globally foucus in the input -->
+    <script src="src/handle_Form/handle_button/handle_focus_controll.js"></script>
+
+    <!-- Handle visitor total registered
+    <script src="src/handle_Form/handle_control/controll_total_visitors.js"></script>
+     -->
+
+     <script src="src/handle_Form/handle_control/controll_total_entry.js"></script>
+
+    <!-- handle server registered -->
+    <script type="module" src="visitor_server.js"></script>
+
+        <!-- handle server registered -->
+    <script type="module" src="RFID_server.js"></script>  
+
+    <script>
+      // PAGE LOAD ANIMATION
+      window.addEventListener("load", () => {
+          document.body.classList.add("page-loaded");
+          AOS.init({ 
+              duration: 800,      // animation duration
+              easing: 'ease-out', // easing style
+              once: true          // animation only once
+          });
+      });
+    </script>
+  </body>
+</html>
