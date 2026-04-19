@@ -58,7 +58,7 @@
         <h1><i class="fa-solid fa-user"></i> Visitor Profiler</h1>
         <div>
           <button id="openRegister">
-            <i class="fa-solid fa-user-plus"></i> Register New
+            <i class="fa-solid fa-user-plus"></i> Add New Visitor
           </button>
         </div>
       </header>
@@ -71,45 +71,55 @@
               <h2><i class="fa-solid fa-user-plus"></i> Register New Visitor</h2>
 
               <div class="form-group">
-                <label for="rfidcards">RFID Card</label>
-                <input id="rfidcards" placeholder="Tap Your RFID Card">
+                <label for="rfidcards">RFID Cards*</label>
+                <input id="rfidcards" placeholder="Scan Visitor Badge..." required>
               </div>
 
               <div class="model-line">
                 <div class="form-group">
-                  <label>Last Name</label>
-                  <input id="last_name" placeholder="Enter Your Last Name">
+                  <label>Last Name*</label>
+                  <input id="last_name" placeholder="Enter Your Last Name" required>
                 </div>
                 <div class="form-group">
-                  <label>First Name</label>
-                  <input id="first_name" placeholder="Enter Your First Name">
+                  <label>First Name*</label>
+                  <input id="first_name" placeholder="Enter Your First Name" required>
                 </div>
                 <div class="form-group">
-                  <label>Middle Name</label>
-                  <input id="middle_name" placeholder="Enter Your Middle Name">
+                  <label>Middle Name*</label>
+                  <input id="middle_name" placeholder="Enter Your Middle Name" required>
                 </div>
               </div>
 
-              <div class="model-line">
-                <div class="form-group">
-                  <label for="municipality">Municipality/City</label>
-                  <select id="municipality" onchange="updateBarangays()">
-                    <option value="">-- Select Municipality --</option>
-                  </select>
-                </div>
+               <div class="address-line">
 
-                <div class="form-group">
-                  <label for="barangay">Barangay</label>
-                  <select id="barangay">
-                    <option value="">-- Select Municipality First --</option>
-                  </select>
-                </div>
-
-                <div class="form-group">
-                  <label for="zipcode">ZIP Code</label>
-                  <input type="text" id="zipcode" readonly placeholder="Auto-filled">
-                </div>
+              <!-- PROVINCE -->
+              <div class="address-group">
+                <label>Province*</label>
+                <input list="provinceList" id="province" placeholder="Select province..." required>
+                <datalist id="provinceList"></datalist>
               </div>
+
+              <!-- MUNICIPALITY -->
+              <div class="address-group">
+                <label>Municipality/City*</label>
+                <input list="municipalityList" id="municipality" placeholder="Select municipality..." required>
+                <datalist id="municipalityList"></datalist>
+              </div>
+
+              <!-- BARANGAY -->
+              <div class="address-group">
+                <label>Barangay*</label>
+                <input list="barangayList" id="barangay" placeholder="Select barangay..." required>
+                <datalist id="barangayList"></datalist>
+              </div>
+
+              <!-- ZIP -->
+              <div class="address-group zip">
+                <label>ZIP Code*</label>
+                <input type="text" id="zipcode" placeholder="Auto Zip" readonly>
+              </div>
+
+            </div>
 
               <!-- CENTERED BUTTON -->
               <div class="btn-container">
@@ -138,30 +148,13 @@
                                         <p><strong>Name:</strong> <span id="displayFullName">Loading...</span></p>
                                     </div>
                                     <div id="checkInFields">
-                                        <label for="personToVisit" style="font-size: 0.8rem; color: #666;">Host / Person to Visit:</label>
-                                        <select id="personToVisit" required>
-                                            <option value="" disabled selected>-- Select Person to Visit --</option>
-                                            <optgroup label="Administration">
-                                                <option value="Admin Office">Admin Office</option>
-                                                <option value="Registrar">Registrar's Office</option>
-                                            </optgroup>
-                                            <optgroup label="Faculty/Staff">
-                                                <option value="Dr. Smith">Dr. Smith (Dean)</option>
-                                                <option value="Prof. Johnson">Prof. Johnson</option>
-                                                <option value="Ms. Davis">Ms. Davis (Accounting)</option>
-                                                <option value="Others">Others</option>
-                                            </optgroup>
-                                        </select>
-
-                                        <label for="purpose">Purpose:</label>
-                                        <select id="purpose">
-                                            <option value="" disabled selected>-- What purpose to visit? --</option>
-                                            <option value="Inquiry">General Inquiry</option>
-                                            <option value="Document Pickup">Document Pickup</option>
-                                            <option value="Official Business">Official Business</option>
-                                            <option value="Personal">Personal</option>
-                                            <option value="Other">Others</option>
-                                        </select>
+                                        <label for="personToVisit" style="font-size: 0.8rem; color: #666;">Host / Person to Visit*</label>
+                                       <input list="personList" id="personToVisit" placeholder="Search person..." required>
+                                        <datalist id="personList"></datalist>
+                                        
+                                        <label for="purpose" style="font-size: 0.8rem; color: #666;">Purpose of Visit*</label>
+                                        <input list="purposeList" id="purpose" placeholder="Search purpose..." required>
+                                        <datalist id="purposeList"></datalist>
                                     </div>
                                     <p id="statusMessage"></p>
                                     <div class="modal-actions">
@@ -329,16 +322,15 @@
     <!-- Axios CDN -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-
+    <!-- Handle navigation link -->
     <script src="src/handle_Form/handle_button/handle_navlink.js"></script>
-
 
     <!-- Clock connection-->
     <script src="src/handle_Form/handle_button/handle_clock.js"></script>
 
 
     <!--command for in Municipality -->
-    <script src="src/handle_Form/handle_control/controll_address_fucntion.js"></script>
+    <script src="src/handle_Form/handle_generate/handle_generate_input_address.js"></script>
 
     <!-- visitor register pop up command -->
     <script src="src/handle_Form/handle_button/handle_popup_button.js"></script>
@@ -352,6 +344,10 @@
      -->
 
      <script src="src/handle_Form/handle_control/controll_total_entry.js"></script>
+
+     <script src="src/handle_Form/handle_generate/handle_generate_input_purpose.js"></script>
+
+     <script src="src/handle_Form/handle_button/controll_handle_toggle_sidebar.js"></script>
 
     <!-- handle server registered -->
     <script type="module" src="visitor_server.js"></script>
